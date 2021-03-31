@@ -7,25 +7,30 @@ author: AlmirKadric
 #     color:
 
 inputs:
-    inputKey:
-        description: Input key to look at
-        default: refName
+    input-key:
+        description: The input key to check before trying to parse `name` from `GITHUB_REF`.
+        default: target-ref
 
 outputs:
-    refName:
+    ref:
+        description: The resulting raw ref
+        value: ${{ steps.get-ref.outputs.ref }}
+    ref-name:
         description: Resulting ref name
-        value: ${{ steps.refName.outputs.refName }}
+        value: ${{ steps.get-ref.outputs.refName }}
 
 runs:
     using: composite
     steps:
-        - id: refName
+        - id: get-ref
           shell: bash
           env:
-            INPUT_VERSION_TAG: ${{ github.event.inputs[inputs.inputKey] }}
+            INPUT_REF: ${{ github.event.inputs[inputs.input-key] }}
           run: |
-            if [ -n "${INPUT_VERSION_TAG}" ]; then
-                echo ::set-output name=refName::$(echo ${INPUT_VERSION_TAG})
+            if [ -n "${INPUT_REF}" ]; then
+                echo ::set-output name=ref::$(echo ${INPUT_REF})
+                echo ::set-output name=ref-name::$(echo ${INPUT_REF})
             else
-                echo ::set-output name=refName::$(echo ${GITHUB_REF#refs/*/})
+                echo ::set-output name=ref::$(echo ${GITHUB_REF})
+                echo ::set-output name=ref-name::$(echo ${GITHUB_REF#refs/*/})
             fi
