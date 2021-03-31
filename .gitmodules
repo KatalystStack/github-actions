@@ -1,0 +1,9 @@
+[submodule "deps/actions-cache"]
+	path = deps/actions-cache
+	url = https://github.com/actions/cache.git
+[submodule "deps/actions-setup-node"]
+	path = deps/actions-setup-node
+	url = https://github.com/actions/setup-node.git
+[submodule "deps/actions-checkout"]
+	path = deps/actions-checkout
+	url = https://github.com/actions/checkout.git
