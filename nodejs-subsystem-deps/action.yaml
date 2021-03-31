@@ -14,6 +14,7 @@ runs:
           uses: catalyst-stack/github-actions/nodejs-subsystem-setup@master
 
         - name: 'Install project dependencies'
-          if: steps.setup.outputs.cache-hit != 'true'
+          shell: bash
+          if: ${{ steps.setup.outputs.cache-hit != 'true' }}
           run: |
             npm run deps

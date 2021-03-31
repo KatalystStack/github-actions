@@ -58,29 +58,24 @@ outputs:
 runs:
     using: composite
     steps:
-        # Determine target ref & name from input value or by parsing GITHUB_REF
         - id: get-ref
           name: 'Determine target git ref'
-          if: inputs.git-ref == null
+          if: ${{ inputs.git-ref == null }}
           uses: catalyst-stack/github-actions/input-or-ref-name@master
           with:
             input-key: ${{ inputs.input-key }}
 
-        # Setup node.js v14
         - name: 'Setup Node.js'
           uses: actions/setup-node@v2
           with:
             node-version: ${{ inputs.node-version }}
             check-latest: true
 
-        # Checkout repository under ${GITHUB_WORKSPACE}
-        # NOTE: this will eithr checkout given
         - name: 'Checkout repository'
           uses: actions/checkout@v2
           with:
             ref: ${{ inputs.git-ref || steps.get-ref.outputs.ref || null }}
 
-        # Setup dependency caching
         - id: dep-cache
           name: 'Setup dependency cache'
           uses: actions/cache@v2

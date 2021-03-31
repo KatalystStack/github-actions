@@ -20,6 +20,7 @@ runs:
           uses: catalyst-stack/github-actions/nodejs-subsystem-setup@master
 
         - name: 'Run project npm script'
+          shell: bash
           env:
             NPM_SCRIPT: ${{ input.npm-script }}
           run: npm run ${NPM_SCRIPT}
