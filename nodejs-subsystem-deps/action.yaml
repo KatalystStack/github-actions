@@ -1,0 +1,19 @@
+name: Node.js Subsystem Dependencies
+description: Boilerplate dependency installation for a Node.js subsystem project
+author: AlmirKadric
+
+# branding:
+#     icon:
+#     color:
+
+runs:
+    using: composite
+    steps:
+        - id: setup
+          name: 'Setup Node.js subsystem project'
+          uses: catalyst-stack/github-actions/nodejs-subsystem-setup@master
+
+        - name: 'Install project dependencies'
+          if: steps.setup.outputs.cache-hit != 'true'
+          run: |
+            npm run deps
