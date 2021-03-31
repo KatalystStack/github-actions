@@ -1,0 +1,61 @@
+name: Node.js Subsystem Setup
+description: Initial boilerplate setup for a Node.js subsystem project
+author: AlmirKadric
+
+# branding:
+#     icon:
+#     color:
+
+inputs:
+    node-version:
+        description: >
+            Node.js version to setup. This defaults to '14' if not provided.
+
+            ※ This is a proxy to the `node-version` input for the `actions/setup-node` action.
+        default: '14'
+    git-ref:
+        description: >
+            Git reference to checkout. This defaults to the SHA or ref for the
+            event which triggered the job.
+
+            ※ This is a proxy to the `ref` input for the `actions/checkout` action.
+        default: null
+    cache-key:
+        description: >
+            Unique key identity for saving and restoring to and from the cache.
+            The `${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}`
+            default will be used if not provided.
+
+            ※ This is a proxy to the `key` input for the `actions/cache` action.
+        default: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+    cache-path:
+        description: >
+            Newline seperated list of path(s) which should be cached. This
+            defaults to `./node_modules` if not provided.
+
+            ※ This is a proxy to the `path` input for the `actions/cache` action.
+        default: |
+            ./node_modules
+
+runs:
+    using: composite
+    steps:
+        # Setup node.js v14
+        - name: Setup Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: ${{ inputs.node-version }}
+            check-latest: true
+
+        # Checkout repository under ${GITHUB_WORKSPACE}
+        - name: Checkout repository
+          uses: actions/checkout@v2
+          with:
+            ref: ${{ inputs.git-ref }}
+
+        # Setup dependency caching
+        - name: 'Setup dependency cache'
+          uses: actions/cache@v2
+          with:
+            key: ${{ inputs.cache-key }}
+            path: ${{ inputs.cache-path }}
