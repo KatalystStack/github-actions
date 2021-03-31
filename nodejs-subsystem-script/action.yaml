@@ -7,6 +7,38 @@ author: AlmirKadric
 #     color:
 
 inputs:
+    token:
+        description:
+        default: ${{ github.token }}
+    target-ref:
+        description: >
+            The git ref we should setup the job against. This defaults to the
+            SHA or ref of the event which triggered the job.
+
+            ※ This is a proxy to the `target-ref` input for the `catalyst-stack/github-actions/input-or-ref-name` action.
+            ※ This is a proxy to the `ref` input for the `actions/checkout` action.
+        default: ''
+    node-version:
+        description: >
+            Node.js version to setup. This defaults to '14' if not provided.
+
+            ※ This is a proxy to the `node-version` input for the `actions/setup-node` action.
+        default: '14'
+    cache-path:
+        description: >
+            Newline seperated list of path(s) which should be cached. This
+            defaults to `./node_modules` if not provided.
+
+            ※ This is a proxy to the `path` input for the `actions/cache` action.
+        default: |
+            ./node_modules
+    cache-key:
+        description: >
+            Unique key identity for saving and restoring to and from the cache.
+            The ``
+            default will be used if not provided.
+
+            ※ This is a proxy to the `key` input for the `actions/cache` action.
     npm-script:
         description: >
             The name of the npm script to run. This defaults to 'test' if not
@@ -14,13 +46,7 @@ inputs:
         default: test
 
 runs:
-    using: composite
-    steps:
-        - name: 'Setup Node.js subsystem project'
-          uses: catalyst-stack/github-actions/nodejs-subsystem-setup@master
-
-        - name: 'Run project npm script'
-          shell: bash
-          env:
-            NPM_SCRIPT: ${{ input.npm-script }}
-          run: npm run ${NPM_SCRIPT}
+    using: 'node12'
+    main: ./main.js
+    post: ./post.js
+    post-if: 'success()'

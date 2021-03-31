@@ -7,34 +7,23 @@ author: AlmirKadric
 #     color:
 
 inputs:
-    input-key:
+    token:
+        description:
+        default: ${{ github.token }}
+    target-ref:
         description: >
-            The target ref input key for the job. This defaults to 'target-ref'
-            if not provided.
+            The git ref we should setup the job against. This defaults to the
+            SHA or ref of the event which triggered the job.
 
-            ※ This is a proxy to the `input-key` input for the `catalyst-stack/github-actions/input-or-ref-name` action.
-        default: target-ref
+            ※ This is a proxy to the `target-ref` input for the `catalyst-stack/github-actions/input-or-ref-name` action.
+            ※ This is a proxy to the `ref` input for the `actions/checkout` action.
+        default: ''
     node-version:
         description: >
             Node.js version to setup. This defaults to '14' if not provided.
 
             ※ This is a proxy to the `node-version` input for the `actions/setup-node` action.
         default: '14'
-    git-ref:
-        description: >
-            Git reference to checkout. This defaults to the input target ref if
-            provided or the SHA/ref of the event which triggered the job.
-
-            ※ This is a proxy to the `ref` input for the `actions/checkout` action.
-        default: null
-    cache-key:
-        description: >
-            Unique key identity for saving and restoring to and from the cache.
-            The `${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}`
-            default will be used if not provided.
-
-            ※ This is a proxy to the `key` input for the `actions/cache` action.
-        default: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
     cache-path:
         description: >
             Newline seperated list of path(s) which should be cached. This
@@ -43,42 +32,26 @@ inputs:
             ※ This is a proxy to the `path` input for the `actions/cache` action.
         default: |
             ./node_modules
+    cache-key:
+        description: >
+            Unique key identity for saving and restoring to and from the cache.
+            The ``
+            default will be used if not provided.
+
+            ※ This is a proxy to the `key` input for the `actions/cache` action.
 
 outputs:
+    # catalyst-stack/github-actions/input-or-ref-name@master
     ref:
         description:
-        value: ${{ steps.get-ref.outputs.ref }}
     ref-name:
         description:
-        value: ${{ steps.get-ref.outputs.ref-name }}
+    # actions/cache@v2
     cache-hit:
         description:
-        value: ${{ steps.dep-cache.outputs.cache-hit }}
 
 runs:
-    using: composite
-    steps:
-        - id: get-ref
-          name: 'Determine target git ref'
-          if: ${{ inputs.git-ref == null }}
-          uses: catalyst-stack/github-actions/input-or-ref-name@master
-          with:
-            input-key: ${{ inputs.input-key }}
-
-        - name: 'Setup Node.js'
-          uses: actions/setup-node@v2
-          with:
-            node-version: ${{ inputs.node-version }}
-            check-latest: true
-
-        - name: 'Checkout repository'
-          uses: actions/checkout@v2
-          with:
-            ref: ${{ inputs.git-ref || steps.get-ref.outputs.ref || null }}
-
-        - id: dep-cache
-          name: 'Setup dependency cache'
-          uses: actions/cache@v2
-          with:
-            key: ${{ inputs.cache-key }}
-            path: ${{ inputs.cache-path }}
+    using: 'node12'
+    main: ./main.js
+    post: ./post.js
+    post-if: 'success()'

@@ -7,9 +7,10 @@ author: AlmirKadric
 #     color:
 
 inputs:
-    input-key:
-        description: The input key to check before trying to parse `name` from `GITHUB_REF`.
-        default: target-ref
+    target-ref:
+        description: >
+            The `name` we should use if available before trying to parse `name`
+            from `GITHUB_REF`.
 
 outputs:
     ref:
@@ -17,20 +18,8 @@ outputs:
         value: ${{ steps.get-ref.outputs.ref }}
     ref-name:
         description: Resulting ref name
-        value: ${{ steps.get-ref.outputs.refName }}
+        value: ${{ steps.get-ref.outputs.ref-name }}
 
 runs:
-    using: composite
-    steps:
-        - id: get-ref
-          shell: bash
-          env:
-            INPUT_REF: ${{ github.event.inputs[inputs.input-key] }}
-          run: |
-            if [ -n "${INPUT_REF}" ]; then
-                echo ::set-output name=ref::$(echo ${INPUT_REF})
-                echo ::set-output name=ref-name::$(echo ${INPUT_REF})
-            else
-                echo ::set-output name=ref::$(echo ${GITHUB_REF})
-                echo ::set-output name=ref-name::$(echo ${GITHUB_REF#refs/*/})
-            fi
+    using: 'node12'
+    main: ./main.js
