@@ -1,0 +1,25 @@
+name: Node.js Subsystem Script
+description: Setup a Node.js subsystem project and run a NPM script
+author: AlmirKadric
+
+# branding:
+#     icon:
+#     color:
+
+inputs:
+    npm-script:
+        description: >
+            The name of the npm script to run. This defaults to 'test' if not
+            provided.
+        default: test
+
+runs:
+    using: composite
+    steps:
+        - name: 'Setup Node.js subsystem project'
+          uses: catalyst-stack/github-actions/nodejs-subsystem-setup@master
+
+        - name: 'Run project npm script'
+          env:
+            NPM_SCRIPT: ${{ input.npm-script }}
+          run: npm run ${NPM_SCRIPT}
