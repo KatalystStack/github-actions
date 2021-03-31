@@ -1,0 +1,31 @@
+name: Input or GITHUB_REF name
+description: Returns either the name given via input or parses it from GITHUB_REF
+author: AlmirKadric
+
+# branding:
+#     icon:
+#     color:
+
+inputs:
+    inputKey:
+        description: Input key to look at
+        default: refName
+
+outputs:
+    refName:
+        description: Resulting ref name
+        value: ${{ steps.refName.outputs.refName }}
+
+runs:
+    using: composite
+    steps:
+        - id: refName
+          shell: bash
+          env:
+            INPUT_VERSION_TAG: ${{ github.event.inputs[inputs.inputKey] }}
+          run: |
+            if [ -n "${INPUT_VERSION_TAG}" ]; then
+                echo ::set-output name=refName::$(echo ${INPUT_VERSION_TAG})
+            else
+                echo ::set-output name=refName::$(echo ${GITHUB_REF#refs/*/})
+            fi
