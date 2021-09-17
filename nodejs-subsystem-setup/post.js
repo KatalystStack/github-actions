@@ -14,8 +14,9 @@ async function run() {
 	const hashedFiles = crypto.createHash('sha256')
 		.update(fs.readFileSync('./package-lock.json'))
 		.digest("hex");
+	const hashSalt = getInput('cache-salt');
 
-	setInput('key', `${runnerOS}-deps-${hashedFiles}`);
+	setInput('key', `${runnerOS}-deps-${hashSalt}_${hashedFiles}`);
 	setInput('path', getInput('cache-path'));
 	require('../deps-cache/actions-cache/save/index');
 

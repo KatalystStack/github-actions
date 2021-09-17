@@ -32,13 +32,10 @@ inputs:
             ※ This is a proxy to the `path` input for the `actions/cache` action.
         default: |
             ./node_modules
-    cache-key:
+    cache-salt:
         description: >
-            Unique key identity for saving and restoring to and from the cache.
-            The ``
-            default will be used if not provided.
-
-            ※ This is a proxy to the `key` input for the `actions/cache` action.
+            Random salt to put at the end of cache key
+            The `` default will be used if not provided.
     npm-script:
         description: >
             The name of the npm script to run. This defaults to 'test' if not
