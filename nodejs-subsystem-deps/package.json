@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-subsystem-deps",
+  "description": "",
+  "version": "0.1.0",
+  "author": {
+    "name": "Almir Kadric",
+    "email": "github@almirkadric.com",
+    "url": "https://github.com/AlmirKadric"
+  },
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6"
+  }
+}

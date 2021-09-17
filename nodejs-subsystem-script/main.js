@@ -14,9 +14,13 @@ async function run() {
 	/**
 	 * Run npm deps
 	 */
-	const npmScript = getInput('npm-script');
-	const stdOut = execSync(`/bin/env npm run ${npmScript}`);
-	process.stdout.write(stdOut);
+	try {
+		const npmScript = getInput('npm-script');
+		const stdOut = execSync(`/bin/env npm run ${npmScript}`);
+		process.stdout.write(stdOut);
+	} catch (error) {
+		core.setFailed(error.message);
+	}
 }
 
 module.exports = run();

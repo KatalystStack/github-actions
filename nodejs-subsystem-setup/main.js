@@ -1,10 +1,7 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const crypto = require('crypto');
 
-const { execSync } = require('child_process');
 const { getInput, setInput, waitForStdOutPattern } = require('../helpers/index');
 
 
