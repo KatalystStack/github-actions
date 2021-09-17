@@ -1,7 +1,9 @@
 'use strict';
 
+const fs = require('fs');
 const crypto = require('crypto');
 
+const { internalSalt } = require('./config');
 const { getInput, setInput, waitForStdOutPattern } = require('../helpers/index');
 
 
@@ -52,7 +54,7 @@ async function run() {
 		.digest("hex");
 	const hashSalt = getInput('cache-salt');
 
-	setInput('key', `${runnerOS}-deps-${hashSalt}_${hashedFiles}`);
+	setInput('key', `${runnerOS}-deps-${internalSalt}${hashSalt}_${hashedFiles}`);
 	setInput('path', getInput('cache-path'));
 	require('../deps-cache/actions-cache/restore/index');
 

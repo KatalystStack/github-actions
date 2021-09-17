@@ -16,10 +16,9 @@ async function run() {
 	 */
 	try {
 		const npmScript = getInput('npm-script');
-		const stdOut = execSync(`/bin/env npm run ${npmScript}`);
-		process.stdout.write(stdOut);
+		execSync(`/bin/env npm run ${npmScript}`, { stdio: 'inherit' });
 	} catch (error) {
-		core.setFailed(error.message);
+		process.exit(1);
 	}
 }
 

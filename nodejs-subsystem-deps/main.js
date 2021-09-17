@@ -1,7 +1,5 @@
 'use strict';
 
-const core = require('@actions/core');
-
 const { execSync } = require('child_process');
 const { getOutput } = require('../helpers/index');
 
@@ -18,10 +16,9 @@ async function run() {
 	 */
 	if (getOutput('cache-hit') !== 'true') {
 		try {
-			const stdOut = execSync(`/bin/env npm run deps`);
-			process.stdout.write(stdOut);
+			execSync(`/bin/env npm run deps`, { stdio: 'inherit' });
 		} catch (error) {
-			core.setFailed(error.message);
+			process.exit(1);
 		}
 	} else {
 		console.log('Cache-hit, not building deps');
