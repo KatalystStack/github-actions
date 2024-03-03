@@ -6,7 +6,7 @@ const { getInput } = require('../helpers/index');
 
 async function run() {
 	/**
-	 * catalyst-stack/github-actions/nodejs-subsystem-setup@master
+	 * katalyststack/github-actions/nodejs-subsystem-setup@master
 	 */
 	await require('../nodejs-subsystem-setup/main');
 

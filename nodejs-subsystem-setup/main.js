@@ -9,10 +9,10 @@ const { getInput, setInput, waitForStdOutPattern } = require('../helpers/index')
 
 async function run() {
 	/**
-	 * catalyst-stack/github-actions/input-or-ref-name@master
+	 * katalyststack/github-actions/input-or-ref-name@master
 	 */
 	const { inputOrRef } = await require('../input-or-ref-name/main');
-	console.log('catalyst-stack/github-actions/input-or-ref-name - complete!\n');
+	console.log('katalyststack/github-actions/input-or-ref-name - complete!\n');
 
 
 	/**

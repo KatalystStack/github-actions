@@ -15,7 +15,7 @@ inputs:
             The git ref we should setup the job against. This defaults to the
             SHA or ref of the event which triggered the job.
 
-            ※ This is a proxy to the `target-ref` input for the `catalyst-stack/github-actions/input-or-ref-name` action.
+            ※ This is a proxy to the `target-ref` input for the `katalyststack/github-actions/input-or-ref-name` action.
             ※ This is a proxy to the `ref` input for the `actions/checkout` action.
         default: ''
     node-version:
