@@ -20,10 +20,10 @@ inputs:
         default: ''
     node-version:
         description: >
-            Node.js version to setup. This defaults to '14' if not provided.
+            Node.js version to setup. This defaults to '20' if not provided.
 
             ※ This is a proxy to the `node-version` input for the `actions/setup-node` action.
-        default: '14'
+        default: '20'
     cache-path:
         description: >
             Newline seperated list of path(s) which should be cached. This
@@ -48,7 +48,7 @@ outputs:
         description:
 
 runs:
-    using: 'node12'
+    using: 'node20'
     main: ./main.js
     post: ./post.js
     post-if: 'success()'
